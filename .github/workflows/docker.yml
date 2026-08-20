@@ -10,27 +10,24 @@ jobs:
     steps:
       # Step 1: Checkout your code
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Step 2: Set up Docker Buildx
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
 
       # Step 3: Log in to Docker Hub
       - name: Log in to Docker Hub
-        run: |
-          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-          docker info
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
       # Step 4: Build Docker image
-      # IMPORTANT: If your Dockerfile is not in the repo root, change '.' to the correct folder path
+      # IMPORTANT: If your Dockerfile is not in the root, change '.' to the correct folder path
       - name: Build Docker image
-        run: |
-          ls -la
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/devops-hello:latest .
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/devops-hello:latest .
 
       # Step 5: Push Docker image
       - name: Push Docker image
         run: docker push ${{ secrets.DOCKER_USERNAME }}/devops-hello:latest
+
 
 
